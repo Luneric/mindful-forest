@@ -14,6 +14,17 @@ function App() {
 
   const [spotifyLink, setSpotifyLink] = useState("");
 
+  React.useEffect(() => {
+    const savedData = localStorage.getItem("calendarData");
+    if (savedData) {
+      setCalendarData(JSON.parse(savedData));
+    }
+  }, []);
+  
+  React.useEffect(() => {
+    localStorage.setItem("calendarData", JSON.stringify(calendarData));
+  }, [calendarData]);
+
   const handleLogin = (e) => {
     e.preventDefault();
     if (username && password) {
@@ -76,7 +87,6 @@ function App() {
                 ))}
               </div>
               <p>Your last mood: {todayEntry.mood || mood}</p>
-              <button onClick={handleSaveEntry}>Save Entry</button>
             </div>
 
             <div className="section">
