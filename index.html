@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mindful Forest</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-green-100 min-h-screen flex flex-col items-center justify-center p-4" style="background-image: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb'); background-size: cover; background-position: center;">
+
+  <div class="bg-white bg-opacity-80 rounded-2xl shadow-lg p-6 max-w-md w-full space-y-6">
+    <h1 class="text-3xl font-bold text-center text-green-900">🌿 Mindful Forest</h1>
+    <p class="text-center text-green-700">A calm space for your soul</p>
+
+    <!-- Affirmation Section -->
+    <div class="space-y-3">
+      <h2 class="text-lg font-semibold">🌞 Your Daily Affirmation</h2>
+      <div id="affirmation" class="bg-green-50 p-4 rounded-lg text-center">Be kind to yourself. ❤️</div>
+      <button onclick="newAffirmation()" class="w-full bg-green-500 text-white p-2 rounded-lg hover:bg-green-600">New Affirmation</button>
+    </div>
+
+    <!-- Mood Tracker Section -->
+    <div class="space-y-3">
+      <h2 class="text-lg font-semibold">🌈 How are you feeling today?</h2>
+      <div class="flex justify-around text-2xl">
+        <button onclick="saveMood('😌')">😌</button>
+        <button onclick="saveMood('😔')">😔</button>
+        <button onclick="saveMood('😄')">😄</button>
+        <button onclick="saveMood('😊')">😊</button>
+        <button onclick="saveMood('😯')">😯</button>
+      </div>
+      <p class="text-center">Your last mood: <span id="lastMood">😌</span></p>
+    </div>
+
+    <!-- Journal Section -->
+    <div class="space-y-3">
+      <h2 class="text-lg font-semibold">📓 Journal It Out</h2>
+      <textarea id="journal" placeholder="Write your thoughts here..." class="w-full p-3 rounded-lg bg-green-50"></textarea>
+      <button onclick="saveJournal()" class="w-full bg-green-500 text-white p-2 rounded-lg hover:bg-green-600">Save Entry</button>
+    </div>
+
+    <!-- Forest Sound Section -->
+    <div class="space-y-3 text-center">
+      <h2 class="text-lg font-semibold">🎵 Calming Forest Sounds</h2>
+      <button onclick="toggleSound()" class="bg-green-500 text-white p-2 rounded-lg hover:bg-green-600">Play / Pause</button>
+      <audio id="forestSound" loop>
+        <source src="forest-sound.mp3" type="audio/mpeg">
+      </audio>
+    </div>
+  </div>
+
+  <footer class="mt-6 text-green-800 text-sm">
+    Made with 🌸 and mindfulness • ©2025 You
+  </footer>
+
+<script src="script.js"></script>
+</body>
+</html>
