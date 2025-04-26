@@ -3,11 +3,12 @@ body, html, #root, .App {
   padding: 0;
   height: 100%;
   font-family: 'Segoe UI', sans-serif;
-  background: #a8d5ba;
+  background: url('background.jpeg') no-repeat center center fixed; /* Background image */
+  background-size: cover; /* Ensures it covers the entire screen */
 }
 
 .overlay {
-  background: rgba(255, 255, 255, 0.8);
+  background: rgba(0, 0, 0, 0.5); /* Darker overlay for better readability */
   min-height: 100%;
   padding: 2rem;
 }

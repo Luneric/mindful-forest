@@ -3,9 +3,12 @@ import Calendar from "react-calendar";
 import "./App.css";
 
 function App() {
+  const DEMO_USERNAME = "demo";
+  const DEMO_PASSWORD = "password123";
   const [loggedIn, setLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const [mood, setMood] = useState("");
   const [journal, setJournal] = useState("");
@@ -14,10 +17,25 @@ function App() {
 
   const [spotifyLink, setSpotifyLink] = useState("");
 
+  React.useEffect(() => {
+    const savedData = localStorage.getItem("calendarData");
+    if (savedData) {
+      setCalendarData(JSON.parse(savedData));
+    }
+  }, []);
+  
+  React.useEffect(() => {
+    localStorage.setItem("calendarData", JSON.stringify(calendarData));
+  }, [calendarData]);
+
   const handleLogin = (e) => {
     e.preventDefault();
-    if (username && password) {
-      setLoggedIn(true);
+    if (username === DEMO_USERNAME && password === DEMO_PASSWORD) {
+       setLoggedIn(true);
+       setErrorMessage("");
+    } 
+    else {
+        setErrorMessage("Incorrect username or password. Please try again!");
     }
   };
 
@@ -40,6 +58,7 @@ function App() {
         {!loggedIn ? (
           <form onSubmit={handleLogin} className="login-form">
             <h2>Login</h2>
+            {errorMessage && <p className="error-message">{errorMessage}</p>}
             <input
               type="text"
               placeholder="Username"
@@ -76,7 +95,6 @@ function App() {
                 ))}
               </div>
               <p>Your last mood: {todayEntry.mood || mood}</p>
-              <button onClick={handleSaveEntry}>Save Entry</button>
             </div>
 
             <div className="section">
