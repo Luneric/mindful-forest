@@ -101,27 +101,30 @@ function App() {
               )}
             </div>
 
-            <div className="section">
-              <h2>🎵 Your Playlist</h2>
-              <input
-                type="text"
-                placeholder="Enter Spotify playlist link"
-                value={spotifyLink}
-                onChange={(e) => setSpotifyLink(e.target.value)}
-              />
-              {spotifyLink && (
-                <iframe
-                  src={spotifyLink}
-                  width="100%"
-                  height="380"
-                  frameBorder="0"
-                  allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                  loading="lazy"
-                  title="Spotify Playlist"
-                  style={{ borderRadius: "12px", marginTop: "1rem" }}
-                ></iframe>
-              )}
-            </div>
+           <div className="section">
+  <h2>🎵 Your Playlist</h2>
+  <input
+    type="text"
+    placeholder="Enter Spotify playlist link"
+    value={spotifyLink}
+    onChange={(e) => setSpotifyLink(e.target.value)}
+  />
+  
+  {spotifyLink && spotifyLink.includes("open.spotify.com") ? (
+    <iframe
+      src={spotifyLink.replace("open.spotify.com/", "open.spotify.com/embed/")}
+      width="100%"
+      height="380"
+      frameBorder="0"
+      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+      loading="lazy"
+      title="Spotify Playlist"
+      style={{ borderRadius: "12px", marginTop: "1rem" }}
+    ></iframe>
+  ) : spotifyLink ? (
+    <p style={{ color: "red", marginTop: "1rem" }}>❌ Please enter a valid Spotify link!</p>
+  ) : null}
+</div>
           </div>
         )}
       </div>
