@@ -3,11 +3,12 @@ import Calendar from "react-calendar";
 import "./App.css";
 
 function App() {
-  const [accounts, setAccounts] = useState({}); // Store users {username: password}
-  const [loggedInUser, setLoggedInUser] = useState(null);
-
+  const DEMO_USERNAME = "demo";
+  const DEMO_PASSWORD = "password123";
+  const [loggedIn, setLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const [mood, setMood] = useState("");
   const [journal, setJournal] = useState("");
@@ -16,29 +17,26 @@ function App() {
 
   const [spotifyLink, setSpotifyLink] = useState("");
 
+  React.useEffect(() => {
+    const savedData = localStorage.getItem("calendarData");
+    if (savedData) {
+      setCalendarData(JSON.parse(savedData));
+    }
+  }, []);
+  
+  React.useEffect(() => {
+    localStorage.setItem("calendarData", JSON.stringify(calendarData));
+  }, [calendarData]);
+
   const handleLogin = (e) => {
     e.preventDefault();
-    if (accounts[username] && accounts[username] === password) {
-      setLoggedInUser(username);
-    } else {
-      alert("Invalid login! Please check your username/password.");
+    if (username === DEMO_USERNAME && password === DEMO_PASSWORD) {
+       setLoggedIn(true);
+       setErrorMessage("");
+    } 
+    else {
+        setErrorMessage("Incorrect username or password. Please try again!");
     }
-  };
-
-  const handleSignup = (e) => {
-    e.preventDefault();
-    if (accounts[username]) {
-      alert("Account already exists!");
-    } else {
-      setAccounts({ ...accounts, [username]: password });
-      setLoggedInUser(username);
-    }
-  };
-
-  const handleLogout = () => {
-    setLoggedInUser(null);
-    setUsername("");
-    setPassword("");
   };
 
   const handleSaveEntry = () => {
@@ -54,50 +52,31 @@ function App() {
 
   const todayEntry = calendarData[selectedDate.toDateString()] || {};
 
-  // Automatically convert spotify link to embed
-  const getEmbedLink = (link) => {
-    if (!link.includes("/embed/")) {
-      return link.replace("open.spotify.com", "open.spotify.com/embed");
-    }
-    return link;
-  };
-
   return (
     <div className="App">
       <div className="overlay">
-        {!loggedInUser ? (
-          <div className="login-signup-form">
-            <h2>Welcome to Mindful Forest</h2>
-
-            <form onSubmit={handleLogin}>
-              <input
-                type="text"
-                placeholder="Username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                required
-              />
-              <input
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-              <div className="button-group">
-                <button type="submit">Log In</button>
-                <button type="button" onClick={handleSignup}>
-                  Sign Up
-                </button>
-              </div>
-            </form>
-          </div>
+        {!loggedIn ? (
+          <form onSubmit={handleLogin} className="login-form">
+            <h2>Login</h2>
+            {errorMessage && <p className="error-message">{errorMessage}</p>}
+            <input
+              type="text"
+              placeholder="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+            />
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            <button type="submit">Log In</button>
+          </form>
         ) : (
           <div className="dashboard">
-            <button className="logout-button" onClick={handleLogout}>
-              Logout
-            </button>
-
             <h1>Mindful Forest</h1>
             <p>A calm space for your soul</p>
 
@@ -110,17 +89,12 @@ function App() {
               <h2>🌈 How are you feeling today?</h2>
               <div className="emojis">
                 {["🙂", "😕", "😄", "😉", "😌"].map((face) => (
-                  <span
-                    key={face}
-                    onClick={() => setMood(face)}
-                    style={{ cursor: "pointer", fontSize: "2rem", margin: "0.2rem" }}
-                  >
+                  <span key={face} onClick={() => setMood(face)} style={{ cursor: "pointer", fontSize: "2rem", margin: "0.2rem" }}>
                     {face}
                   </span>
                 ))}
               </div>
               <p>Your last mood: {todayEntry.mood || mood}</p>
-              <button onClick={handleSaveEntry}>Save Entry</button>
             </div>
 
             <div className="section">
@@ -145,27 +119,30 @@ function App() {
               )}
             </div>
 
-            <div className="section">
-              <h2>🎵 Your Playlist</h2>
-              <input
-                type="text"
-                placeholder="Enter Spotify playlist link"
-                value={spotifyLink}
-                onChange={(e) => setSpotifyLink(e.target.value)}
-              />
-              {spotifyLink && (
-                <iframe
-                  src={getEmbedLink(spotifyLink)}
-                  width="100%"
-                  height="380"
-                  frameBorder="0"
-                  allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                  loading="lazy"
-                  title="Spotify Playlist"
-                  style={{ borderRadius: "12px", marginTop: "1rem" }}
-                ></iframe>
-              )}
-            </div>
+           <div className="section">
+  <h2>🎵 Your Playlist</h2>
+  <input
+    type="text"
+    placeholder="Enter Spotify playlist link"
+    value={spotifyLink}
+    onChange={(e) => setSpotifyLink(e.target.value)}
+  />
+  
+  {spotifyLink && spotifyLink.includes("open.spotify.com") ? (
+    <iframe
+      src={spotifyLink.replace("open.spotify.com/", "open.spotify.com/embed/")}
+      width="100%"
+      height="380"
+      frameBorder="0"
+      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+      loading="lazy"
+      title="Spotify Playlist"
+      style={{ borderRadius: "12px", marginTop: "1rem" }}
+    ></iframe>
+  ) : spotifyLink ? (
+    <p style={{ color: "red", marginTop: "1rem" }}>❌ Please enter a valid Spotify link!</p>
+  ) : null}
+</div>
           </div>
         )}
       </div>
