@@ -52,3 +52,8 @@ button:hover {
 .emojis span:hover {
   transform: scale(1.2);
 }
+.error-message {
+  color: #ff4d4d;
+  margin-bottom: 1rem;
+  font-weight: bold;
+}
