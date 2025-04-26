@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import Calendar from "react-calendar";
 import "./App.css";
+import users from "./users";
 
 function App() {
-  const DEMO_USERNAME = "demo";
-  const DEMO_PASSWORD = "password123";
+  //const DEMO_USERNAME = "demo";
+  //const DEMO_PASSWORD = "password123";
   const [loggedIn, setLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -79,9 +80,14 @@ function App() {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    if (username === DEMO_USERNAME && password === DEMO_PASSWORD) {
+    const matchedUser = users.find(
+	    (user) => user.username === username && user.password === password);
+
+    if (matchedUser) {
       setLoggedIn(true);
       setErrorMessage("");
+      localStorage.setItem("loggedIn", "true");
+      localStorage.setItem("username", matchedUser.username);
     } else {
       setErrorMessage("Incorrect username or password. Please try again!");
     }
