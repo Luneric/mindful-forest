@@ -1,0 +1,49 @@
+#garden-container {
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .garden {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+    min-height: 200px;
+  }
+  
+  .plant {
+    width: 50px;
+    height: 50px;
+    background-color: #8d4d28;
+    border-radius: 50%;
+    animation: grow 5s ease-in-out forwards;
+  }
+  
+  @keyframes grow {
+    0% {
+      transform: scale(0.1);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  
+  .plant.sunflower {
+    background-color: #ffcc00;
+  }
+  
+  .plant.mushroom {
+    background-color: #d1715b;
+  }
+  
+  .plant.willow {
+    background-color: #7f9a6d;
+  }
+  
+  button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+  }
